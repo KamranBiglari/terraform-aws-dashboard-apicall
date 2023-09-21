@@ -2328,16 +2328,63 @@ const handler = async (event) => {
     if (event.describe) {
         return DOCS;
     }
+    if (event.action == 'view') {
+        return `
+        <form>
+        <table style="width:100%">
+        <tr>
+            <td>URL</td>
+            <td>
+            <select name="method" style="padding:0 1rem 0px 2px">
+                <option value="get">GET</option>
+                <option value="post">POST</option>
+                <option value="put">PUT</option>
+                <option value="delete">DELETE</option>
+            </select></td><td><input type="text" name="url" value="https://aws.amazon.com" style="width:100%" /></td>
+        </tr>
+        <tr>
+            <td>Params</td>
+            <td colspan="2"><input type="text" name="params" value="" style="width:100%" /></td>
+        </tr>
+        <tr>
+            <td>Headers</td>
+            <td colspan="2"><input type="text" name="headers" value="" style="width:100%" /></td>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td colspan="2"><input type="text" name="data" value="" style="width:100%" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><a class="btn btn-primary">Execute</a>
+            <cwdb-action action="call" endpoint="arn:aws:lambda:eu-west-2:050253647064:function:terraform-aws-dashboard-apicall" display="popup">  
+            { 
+                "action": "execute",
+            }
+            </cwdb-action>
+            </td>
+        </tr>
+        </table>
+        </form>
+        `;
+    }
     console.log('Received event:', JSON.stringify(event));
+    event = event['widgetContext']['forms']['all'];
     const response = await (0, axios_1.default)({
         method: event.method || 'get',
         url: event.url,
         responseType: 'json',
-        headers: event.headers,
-        data: event.params,
-        params: event.params
+        // headers: event.headers || {},
+        // data: event.data || {},
+        // params: event.params || {}
     })
-        .then((response) => response.data)
+        .then((response) => {
+        return {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+            data: response.data
+        };
+    })
         .catch(function (error) {
         // handle error
         console.log(error);
@@ -2345,17 +2392,7 @@ const handler = async (event) => {
         .finally(function () {
         // always executed
     });
-    // .then(function (response) {
-    //     // handle success
-    //     console.log(response);
-    //     return {
-    //         status: response.status,
-    //         statusText: response.statusText,
-    //         headers: response.headers,
-    //         data: response.data
-    //     };
-    // })
-    return response.status;
+    return response;
 };
 exports.handler = handler;
 
