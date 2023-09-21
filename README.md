@@ -3,7 +3,7 @@
 ## Examples
 ```
 module "dashboard_apicall" {
-    source  = "KamranBiglari/terraform-aws-dashboard-apicall"
+    source  = "KamranBiglari/dashboard-apicall/aws"
     deployment_name = "cloudwatch-dashboard"
     timeout = 30
     memory_size = 1024
