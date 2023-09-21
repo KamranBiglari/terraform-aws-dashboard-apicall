@@ -1,0 +1,26 @@
+{
+    "name": "apicall",
+    "version": "1.0.0",
+    "main": "./src/index.js",
+    "scripts": {
+        "start" : "ts-node -r dotenv/config ./src/index.ts",
+        "dev": "ts-node-dev -r dotenv/config ./test/index.ts",
+        "build": "ncc build ./src/index.ts -o dist/"
+    },
+    "engines": {
+        "node": "18"
+    },
+    "devDependencies": {
+        "@vercel/ncc": "^0.36.1",
+        "@types/node": "^18.14.2",
+        "typescript": "^4.5.5",
+        "ts-node": "^10.4.0",
+        "ts-node-dev": "^2.0.0",
+        "dotenv": "^16.0.2"
+
+
+    },
+    "dependencies": {
+        "axios": "^1.5.0"
+    }
+}
